@@ -1,0 +1,171 @@
+.details-page {
+    min-height: 100vh;
+    background-color: var(--background);
+}
+
+.details-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.back-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 24px;
+}
+
+/* Layout-ul principal: Imagine la stânga, Info la dreapta */
+.product-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 450px;
+    gap: 40px;
+    align-items: start;
+}
+
+.product-gallery {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--outline-variant);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+}
+
+.product-gallery img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Panoul de informații din dreapta */
+.product-info-panel {
+    background: var(--surface-variant);
+    padding: 30px;
+    border-radius: var(--radius);
+    border: 1px solid var(--outline-variant);
+}
+
+.category-badge {
+    background: var(--primary-container);
+    color: var(--primary);
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.info-header h1 {
+    font-size: 2rem;
+    margin: 15px 0 10px;
+    color: var(--on-surface);
+}
+
+.location-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--on-surface-variant);
+    font-size: 0.9rem;
+}
+
+.price-section {
+    margin: 25px 0;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.price-amount {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--primary);
+}
+
+.price-currency {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.buy-now-btn, .chat-btn {
+    padding: 16px;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.2s;
+}
+
+.buy-now-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+}
+
+.chat-btn {
+    background: var(--surface);
+    color: var(--on-surface);
+    border: 1px solid var(--outline-variant);
+}
+
+/* Card Vânzător */
+.seller-card {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--outline-variant);
+}
+
+.seller-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.seller-avatar {
+    width: 45px;
+    height: 45px;
+    background: var(--primary-container);
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Descriere */
+.product-description-section {
+    margin-top: 40px;
+    padding: 30px;
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--outline-variant);
+}
+
+.product-description-section h2 { margin-bottom: 15px; }
+.product-description-section p { line-height: 1.6; color: var(--on-surface-variant); }
+
+@media (max-width: 900px) {
+    .product-main-grid { grid-template-columns: 1fr; }
+}

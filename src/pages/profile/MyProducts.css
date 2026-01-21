@@ -1,0 +1,98 @@
+.my-products-section {
+    margin-top: 30px;
+    background: var(--surface);
+    border-radius: var(--radius);
+}
+
+.section-header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--outline-variant);
+}
+
+.my-products-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.my-product-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    background: var(--surface-variant);
+    border-radius: 16px;
+    border: 1px solid var(--outline-variant);
+    transition: transform 0.2s;
+}
+
+.mini-thumb {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.my-product-info {
+    flex: 1;
+}
+
+.my-product-info h3 {
+    font-size: 1.1rem;
+    margin: 0 0 5px 0;
+    color: var(--on-surface);
+}
+
+.my-product-price {
+    font-weight: 800;
+    color: var(--primary);
+    margin: 0;
+}
+
+.my-product-category {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--on-surface-variant);
+    opacity: 0.7;
+}
+
+.my-product-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-view-btn, .action-delete-btn {
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.action-view-btn {
+    background: var(--primary-container);
+    color: var(--primary);
+}
+
+.action-delete-btn {
+    background: #ffdad6; /* Culoare de eroare Material 3 */
+    color: #410002;
+}
+
+.action-delete-btn:hover { background: #ffb4ab; }
+
+.empty-products {
+    text-align: center;
+    padding: 50px;
+    color: var(--on-surface-variant);
+}
+
+.spinner {
+    animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
