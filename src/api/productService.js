@@ -8,38 +8,70 @@ const ORDER_URL = `${BASE_URL}/orders`;
 export const productService = {
     // === SECȚIUNE PRODUSE ===
 
-    getAll: () => axios.get(API_URL),
+    getAll: () => {
+        return axios.get(API_URL);
+    },
 
-    getById: (id) => axios.get(`${API_URL}/${id}`),
+    getById: (id) => {
+        return axios.get(`${API_URL}/${id}`);
+    },
 
-    getByUser: (userId) => axios.get(`${API_URL}/user/${userId}`),
+    getByUser: (userId) => {
+        return axios.get(`${API_URL}/user/${userId}`);
+    },
 
-    create: (productData) => axios.post(`${API_URL}/add`, productData),
+    create: (productData) => {
+        return axios.post(`${API_URL}/add`, productData);
+    },
 
-    // Această metodă va funcționa acum și pentru Admini deoarece trimite userId în params
-    delete: (id, userId) => axios.delete(`${API_URL}/delete/${id}`, { params: { userId } }),
+    delete: (id, userId) => {
+        return axios.delete(`${API_URL}/delete/${id}`, { params: { userId } });
+    },
 
-    update: (id, userId, productData) => axios.put(`${API_URL}/update/${id}`, productData, {
-        params: { userId }
-    }),
+    update: (id, userId, productData) => {
+        return axios.put(`${API_URL}/update/${id}`, productData, {
+            params: { userId }
+        });
+    },
 
-    search: (name) => axios.get(`${API_URL}/search`, { params: { name } }),
+    search: (name) => {
+        return axios.get(`${API_URL}/search`, { params: { name } });
+    },
 
-    getByCategory: (category) => axios.get(`${API_URL}/category/${category}`),
+    getByCategory: (category) => {
+        return axios.get(`${API_URL}/category/${category}`);
+    },
+
+    // NOU: Funcția de traducere AI
+    translateDescription: (id) => {
+        return axios.get(`${API_URL}/${id}/translate`);
+    },
 
     // === SECȚIUNE COȘ DE CUMPĂRĂTURI ===
 
-    getCart: (userId) => axios.get(`${CART_URL}/user/${userId}`),
+    getCart: (userId) => {
+        return axios.get(`${CART_URL}/user/${userId}`);
+    },
 
-    addToCart: (userId, productId) => axios.post(`${CART_URL}/add`, { userId, productId }),
+    addToCart: (userId, productId) => {
+        return axios.post(`${CART_URL}/add`, { userId, productId });
+    },
 
-    updateCartQuantity: (cartItemId, quantity) => axios.put(`${CART_URL}/update/${cartItemId}`, { quantity }),
+    updateCartQuantity: (cartItemId, quantity) => {
+        return axios.put(`${CART_URL}/update/${cartItemId}`, { quantity });
+    },
 
-    removeFromCart: (cartItemId) => axios.delete(`${CART_URL}/delete/${cartItemId}`),
+    removeFromCart: (cartItemId) => {
+        return axios.delete(`${CART_URL}/delete/${cartItemId}`);
+    },
 
     // === SECȚIUNE COMENZI ===
 
-    placeOrder: (userId) => axios.post(`${ORDER_URL}/place`, null, { params: { userId } }),
+    placeOrder: (userId) => {
+        return axios.post(`${ORDER_URL}/place`, null, { params: { userId } });
+    },
 
-    getOrdersByUser: (userId) => axios.get(`${ORDER_URL}/user/${userId}`)
+    getOrdersByUser: (userId) => {
+        return axios.get(`${ORDER_URL}/user/${userId}`);
+    }
 };
