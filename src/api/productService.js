@@ -1,52 +1,45 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/products';
+const BASE_URL = 'http://localhost:8080/api';
+const API_URL = `${BASE_URL}/products`;
+const CART_URL = `${BASE_URL}/cart`;
+const ORDER_URL = `${BASE_URL}/orders`;
 
 export const productService = {
-    // 1. Obține TOATE produsele (pentru Home)
-    getAll: () => {
-        return axios.get(API_URL);
-    },
+    // === SECȚIUNE PRODUSE ===
 
-    // 2. Obține DETALIILE unui produs (pentru ProductDetails.jsx)
-    // Mapat pe @GetMapping("/{id}") din Java
-    getById: (id) => {
-        return axios.get(`${API_URL}/${id}`);
-    },
+    getAll: () => axios.get(API_URL),
 
-    // 3. Obține produsele unui anumit USER (pentru Profil)
-    // Mapat pe @GetMapping("/user/{userId}") din Java
-    getByUser: (userId) => {
-        return axios.get(`${API_URL}/user/${userId}`);
-    },
+    getById: (id) => axios.get(`${API_URL}/${id}`),
 
-    // 4. CREARE produs nou (pentru AddProduct.jsx)
-    // Mapat pe @PostMapping("/add") din Java
-    create: (productData) => {
-        return axios.post(`${API_URL}/add`, productData);
-    },
+    getByUser: (userId) => axios.get(`${API_URL}/user/${userId}`),
 
-    // 5. ȘTERGERE produs
-    // Mapat pe @DeleteMapping("/delete/{id}") din Java
-    delete: (id, userId) => {
-        return axios.delete(`${API_URL}/delete/${id}`, { params: { userId } });
-    },
+    create: (productData) => axios.post(`${API_URL}/add`, productData),
 
-    // 6. ACTUALIZARE produs
-    // Mapat pe @PutMapping("/update/{id}") din Java
-    update: (id, userId, productData) => {
-        return axios.put(`${API_URL}/update/${id}`, productData, { params: { userId } });
-    },
+    // Această metodă va funcționa acum și pentru Admini deoarece trimite userId în params
+    delete: (id, userId) => axios.delete(`${API_URL}/delete/${id}`, { params: { userId } }),
 
-    // 7. CĂUTARE (pentru search bar-ul de pe Home)
-    // Mapat pe @GetMapping("/search") din Java
-    search: (name) => {
-        return axios.get(`${API_URL}/search`, { params: { name } });
-    },
+    update: (id, userId, productData) => axios.put(`${API_URL}/update/${id}`, productData, {
+        params: { userId }
+    }),
 
-    // 8. FILTRARE CATEGORIE
-    // Mapat pe @GetMapping("/category/{category}") din Java
-    getByCategory: (category) => {
-        return axios.get(`${API_URL}/category/${category}`);
-    }
+    search: (name) => axios.get(`${API_URL}/search`, { params: { name } }),
+
+    getByCategory: (category) => axios.get(`${API_URL}/category/${category}`),
+
+    // === SECȚIUNE COȘ DE CUMPĂRĂTURI ===
+
+    getCart: (userId) => axios.get(`${CART_URL}/user/${userId}`),
+
+    addToCart: (userId, productId) => axios.post(`${CART_URL}/add`, { userId, productId }),
+
+    updateCartQuantity: (cartItemId, quantity) => axios.put(`${CART_URL}/update/${cartItemId}`, { quantity }),
+
+    removeFromCart: (cartItemId) => axios.delete(`${CART_URL}/delete/${cartItemId}`),
+
+    // === SECȚIUNE COMENZI ===
+
+    placeOrder: (userId) => axios.post(`${ORDER_URL}/place`, null, { params: { userId } }),
+
+    getOrdersByUser: (userId) => axios.get(`${ORDER_URL}/user/${userId}`)
 };

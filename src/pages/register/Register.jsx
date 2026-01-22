@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, UserPlus, ArrowLeft, Eye, EyeOff, Phone, MapPin } from 'lucide-react';
-import { authService } from '../../api/authService';
+import { Mail, Lock, User, UserPlus, ArrowLeft, Eye, EyeOff, Phone, MapPin, ShieldAlert } from 'lucide-react';
+import axios from 'axios';
 import './Register.css';
 
 const Register = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
+
+    // State-uri pentru funcția secretă
+    const [adminCode, setAdminCode] = useState("");
+    const [isAdminVisible, setIsAdminVisible] = useState(false);
+    const [clickCount, setClickCount] = useState(0);
+
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -16,6 +22,15 @@ const Register = () => {
         phone: '',
         location: ''
     });
+
+    // Funcția care activează câmpul secret după 5 click-uri pe logo
+    const handleLogoClick = () => {
+        setClickCount(prev => prev + 1);
+        if (clickCount + 1 === 5) {
+            setIsAdminVisible(true);
+            setClickCount(0);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,9 +42,12 @@ const Register = () => {
         }
 
         try {
-            // Trimitem obiectul filtrat fără confirmPassword către backend
             const { confirmPassword, ...dataToSubmit } = formData;
-            await authService.register(dataToSubmit);
+
+            // Trimitem adminCode ca query parameter către backend
+            await axios.post(`http://localhost:8080/api/users/register?adminCode=${adminCode}`, dataToSubmit);
+
+            alert("Cont creat cu succes!");
             navigate('/login');
         } catch (err) {
             setError(err.response?.data || "Eroare la înregistrare.");
@@ -45,12 +63,19 @@ const Register = () => {
 
             <div className="register-card">
                 <div className="register-header">
-                    <div className="register-logo">X</div>
+                    {/* Logoul interactiv */}
+                    <div
+                        className="register-logo"
+                        onClick={handleLogoClick}
+                        title="XCart Logo"
+                    >
+                        X
+                    </div>
                     <h1>Creează cont</h1>
                     <p>Alătură-te comunității XCart</p>
                 </div>
 
-                {error && <div className="error-message" style={{color: '#BA1A1A', marginBottom: '15px', textAlign: 'center'}}>{error}</div>}
+                {error && <div className="error-message">{error}</div>}
 
                 <form onSubmit={handleSubmit} className="register-form">
                     <div className="input-group">
@@ -107,6 +132,23 @@ const Register = () => {
                         </div>
                     </div>
 
+                    {/* Câmpul de ADMIN - Apare doar după 5 click-uri pe logo */}
+                    {isAdminVisible && (
+                        <div className="input-group admin-code-group animated-fade-in">
+                            <label>Cod Invitație Admin</label>
+                            <div className="input-wrapper">
+                                <ShieldAlert size={20} className="input-icon" />
+                                <input
+                                    type="password"
+                                    placeholder="Introdu codul secret"
+                                    value={adminCode}
+                                    onChange={(e) => setAdminCode(e.target.value)}
+                                    autoFocus
+                                />
+                            </div>
+                        </div>
+                    )}
+
                     <div className="input-group">
                         <label>Parolă</label>
                         <div className="input-wrapper">
@@ -118,11 +160,7 @@ const Register = () => {
                                 onChange={(e) => setFormData({...formData, password: e.target.value})}
                                 required
                             />
-                            <button
-                                type="button"
-                                className="toggle-password"
-                                onClick={() => setShowPassword(!showPassword)}
-                            >
+                            <button type="button" className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                             </button>
                         </div>

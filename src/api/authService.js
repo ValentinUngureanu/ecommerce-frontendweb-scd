@@ -11,9 +11,16 @@ export const authService = {
         return axios.post(`${API_URL}/register`, userData);
     },
 
-    // Metodă nouă pentru a actualiza datele pe server
+    // Sincronizat cu @PutMapping("/{id}") din UserController.java
     updateProfile: async (id, userData) => {
-        return axios.put(`${API_URL}/${id}`, userData);
+        const response = await axios.put(`${API_URL}/${id}`, userData);
+
+        if (response.data) {
+            // Actualizăm starea locală pentru a reflecta schimbările instantaneu
+            localStorage.setItem('user', JSON.stringify(response.data));
+        }
+
+        return response.data;
     },
 
     logout: () => {

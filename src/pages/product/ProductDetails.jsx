@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { productService } from '../../api/productService';
+import { authService } from '../../api/authService';
 import Navbar from '../../components/layout/Navbar';
-import { ShoppingCart, MapPin, User, ArrowLeft, ShieldCheck, Truck, MessageCircle } from 'lucide-react';
+import { ShoppingCart, MapPin, User, ArrowLeft, ShieldCheck, Truck } from 'lucide-react';
 import './ProductDetails.css';
 
 const ProductDetails = () => {
@@ -14,7 +15,6 @@ const ProductDetails = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                // Se folosește metoda getById din productService
                 const res = await productService.getById(id);
                 setProduct(res.data);
             } catch (err) {
@@ -25,6 +25,31 @@ const ProductDetails = () => {
         };
         fetchProduct();
     }, [id]);
+
+    const handleAddToCart = async () => {
+        const user = authService.getCurrentUser();
+
+        if (!user) {
+            navigate('/login');
+            return;
+        }
+
+        try {
+            await productService.addToCart(user.id, product.id);
+
+            window.dispatchEvent(new CustomEvent('app-notification', {
+                detail: { message: `"${product.name}" a fost adăugat în coș!` }
+            }));
+
+            window.dispatchEvent(new Event('cartUpdated'));
+
+        } catch (err) {
+            console.error("Eroare la adăugare:", err);
+            window.dispatchEvent(new CustomEvent('app-notification', {
+                detail: { message: "Eroare: Nu s-a putut adăuga produsul în coș." }
+            }));
+        }
+    };
 
     if (loading) return (
         <div className="loading-screen">
@@ -67,12 +92,10 @@ const ProductDetails = () => {
                         </div>
 
                         <div className="action-buttons">
-                            <button className="buy-now-btn">
+                            <button className="buy-now-btn" onClick={handleAddToCart}>
                                 <ShoppingCart size={20} /> Adaugă în coș
                             </button>
-                            <button className="chat-btn">
-                                <MessageCircle size={20} /> Mesaj cu vânzătorul
-                            </button>
+                            {/* Butonul de chat a fost eliminat de aici */}
                         </div>
 
                         <div className="trust-badges">
@@ -86,7 +109,7 @@ const ProductDetails = () => {
                             </div>
                         </div>
 
-                        {/* CARD VÂNZĂTOR - CORELARE CU BACKEND */}
+                        {/* CARD VÂNZĂTOR */}
                         <div className="seller-card">
                             <h3>Informații vânzător</h3>
                             <div className="seller-profile">
@@ -97,7 +120,8 @@ const ProductDetails = () => {
                                     <p className="seller-name">
                                         {product.user?.username || 'Vânzător XCart'}
                                     </p>
-                                    <p className="seller-rating">⭐⭐⭐⭐⭐ (Cont verificat)</p>
+                                    {/* Secțiunea de rating/stele a fost eliminată de aici */}
+                                    <p className="seller-status">Cont verificat</p>
                                 </div>
                             </div>
                         </div>

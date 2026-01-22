@@ -1,81 +1,96 @@
 import React, { useEffect, useState } from 'react';
 import { productService } from '../../api/productService';
 import { authService } from '../../api/authService';
-import { Trash2, ExternalLink, PackageOpen, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Edit3, Trash2, Package } from 'lucide-react';
 import './MyProducts.css';
 
 const MyProducts = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const user = authService.getCurrentUser();
+    const currentUser = authService.getCurrentUser();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetchUserProducts();
-    }, []);
+        const loadUserProducts = async () => {
+            if (!currentUser || !currentUser.id) return;
 
-    const fetchUserProducts = async () => {
-        try {
-            const res = await productService.getByUser(user.id);
-            setProducts(res.data);
-        } catch (err) {
-            console.error("Eroare la încărcarea produselor tale:", err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleDelete = async (productId) => {
-        if (window.confirm("Sigur vrei să ștergi acest anunț?")) {
+            setLoading(true);
             try {
-                // Sincronizat cu @DeleteMapping("/delete/{id}") din Java-ul tău
-                await productService.delete(productId, user.id);
-                setProducts(products.filter(p => p.id !== productId));
+                // Folosim metoda dedicată din productService.js
+                const res = await productService.getByUser(currentUser.id);
+                console.log("Produse primite de la server pentru acest user:", res.data);
+                setProducts(res.data);
             } catch (err) {
-                alert("Eroare la ștergere: " + (err.response?.data || err.message));
+                console.error("Eroare la încărcarea produselor tale:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadUserProducts();
+    }, [currentUser?.id]);
+
+    const handleDelete = async (id) => {
+        if (window.confirm("Ești sigur că vrei să ștergi acest anunț?")) {
+            try {
+                // Atenție: Metoda delete din service-ul tău cere (id, userId)
+                await productService.delete(id, currentUser.id);
+                setProducts(products.filter(p => p.id !== id));
+
+                window.dispatchEvent(new CustomEvent('app-notification', {
+                    detail: { message: "Produsul a fost șters. 🗑️" }
+                }));
+            } catch (err) {
+                console.error("Eroare la ștergere:", err);
             }
         }
     };
 
-    if (loading) return <div className="loading-inline"><Loader2 className="spinner" /> Se încarcă anunțurile tale...</div>;
+    if (loading) return <div className="loader-mini">Se încarcă anunțurile tale...</div>;
 
     return (
-        <div className="my-products-section">
-            <div className="section-header">
-                <h2>Anunțurile mele ({products.length})</h2>
-            </div>
-
+        <div className="my-products-list">
             {products.length === 0 ? (
-                <div className="empty-products">
-                    <PackageOpen size={48} />
+                <div className="no-products-state">
+                    <Package size={40} />
                     <p>Nu ai postat niciun anunț încă.</p>
+                    <button onClick={() => navigate('/add-product')} className="add-first-btn">
+                        Postează primul anunț
+                    </button>
                 </div>
             ) : (
-                <div className="my-products-list">
-                    {products.map(product => (
-                        <div key={product.id} className="my-product-item">
-                            <img src={product.imageUrl} alt={product.name} className="mini-thumb" />
-
-                            <div className="my-product-info">
-                                <h3>{product.name}</h3>
-                                <p className="my-product-price">{product.price} RON</p>
-                                <span className="my-product-category">{product.category}</span>
-                            </div>
-
-                            <div className="my-product-actions">
-                                <button className="action-view-btn" title="Vezi anunț">
-                                    <ExternalLink size={18} />
-                                </button>
-                                <button
-                                    className="action-delete-btn"
-                                    title="Șterge anunț"
-                                    onClick={() => handleDelete(product.id)}
-                                >
-                                    <Trash2 size={18} />
-                                </button>
+                products.map(product => (
+                    <div key={product.id} className="my-product-item">
+                        <div className="item-preview">
+                            <img
+                                src={product.imageUrl || 'https://via.placeholder.com/80'}
+                                alt={product.name}
+                            />
+                            <div className="item-details">
+                                <h4>{product.name}</h4>
+                                <span className="item-price">{product.price} RON</span>
                             </div>
                         </div>
-                    ))}
-                </div>
+
+                        <div className="my-product-actions">
+                            <button
+                                className="action-icon-btn edit-btn"
+                                onClick={() => navigate(`/edit-product/${product.id}`)}
+                            >
+                                <Edit3 size={18} />
+                                <span>Editează</span>
+                            </button>
+
+                            <button
+                                className="action-icon-btn delete-btn"
+                                onClick={() => handleDelete(product.id)}
+                            >
+                                <Trash2 size={18} />
+                            </button>
+                        </div>
+                    </div>
+                ))
             )}
         </div>
     );

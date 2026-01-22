@@ -12,10 +12,11 @@
 
 .product-card:hover {
     transform: translateY(-8px);
-    box-shadow: var(--shadow);
-    border-color: var(--primary);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    border-color: #444e3b;
 }
 
+/* CONTAINER IMAGINE - FIXAT PENTRU POZITIONARE ABSOLUTA */
 .image-container {
     width: 100%;
     height: 200px;
@@ -24,6 +25,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative; /* Critic pentru ca categoria sa stea peste imagine */
 }
 
 .image-container img {
@@ -33,8 +35,21 @@
     transition: transform 0.5s ease;
 }
 
-.product-card:hover .image-container img {
-    transform: scale(1.05);
+/* CATEGORY TAG - MUTAT PESTE IMAGINE */
+.category-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #161d11;
+    background: #e2e9d8; /* Culoarea verde deschis din imaginea ta */
+    padding: 4px 12px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    pointer-events: none; /* Nu blocheaza click-ul pe card */
 }
 
 .card-content {
@@ -45,21 +60,9 @@
     flex-grow: 1;
 }
 
-.category-tag {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--on-primary-container);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    background: var(--primary-container);
-    padding: 4px 12px;
-    border-radius: 12px;
-    width: fit-content;
-}
-
 .card-content h3 {
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--on-surface);
     margin: 4px 0;
     line-height: 1.4;
@@ -68,7 +71,7 @@
 .location {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
     font-size: 0.85rem;
     color: var(--on-surface-variant);
 }
@@ -89,20 +92,21 @@
 }
 
 .amount {
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: var(--on-surface);
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #161d11;
 }
 
 .currency {
     font-size: 0.8rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--on-surface-variant);
 }
 
+/* BUTON ADD TO CART - CULOARE OLIVE FIXATA */
 .add-cart-btn {
-    background-color: var(--primary);
-    color: var(--on-primary);
+    background-color: var(--primary); /* Olive-ul tau din butonul Vinde */
+    color: #ffffff !important;           /* Iconita alba forțată */
     width: 40px;
     height: 40px;
     border-radius: 12px;
@@ -110,9 +114,16 @@
     align-items: center;
     justify-content: center;
     transition: all 0.2s;
+    border: none;
+    cursor: pointer;
 }
 
 .add-cart-btn:hover {
-    background-color: var(--primary-hover, #3D5222);
+    background-color: #323a2b !important;
     transform: scale(1.1);
+}
+
+/* Asiguram ca iconita Lucide (SVG) ramane alba */
+.add-cart-btn svg {
+    stroke: #ffffff !important;
 }

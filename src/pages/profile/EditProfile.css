@@ -1,0 +1,168 @@
+.edit-profile-page {
+    min-height: 100vh;
+    background-color: var(--surface-variant);
+}
+
+.edit-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.back-btn-simple {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: var(--on-surface-variant);
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 24px;
+}
+
+.edit-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.edit-section-card {
+    background: var(--surface);
+    padding: 32px;
+    border-radius: 24px;
+    border: 1px solid var(--outline-variant);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    color: var(--primary);
+}
+
+.avatar-edit-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.avatar-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--primary-container);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid var(--primary);
+}
+
+.avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--primary);
+}
+
+/* --- MODIFICARE AICI: URL FIELD MAI LAT --- */
+.url-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%; /* Se asigură că ocupă tot spațiul cardului */
+}
+
+.url-icon {
+    position: absolute;
+    left: 14px;
+    color: var(--on-surface-variant);
+    z-index: 1;
+}
+
+.url-input-wrapper input {
+    width: 100%; /* Câmpul se întinde pe toată lățimea disponibilă */
+    padding: 12px 16px 12px 42px !important; /* Spațiu generos în stânga pentru iconiță */
+    border-radius: 12px;
+    border: 1px solid var(--outline-variant);
+    background: var(--surface-variant);
+    color: var(--on-surface);
+    font-size: 0.9rem; /* Puțin mai mic pentru a vedea mai mult din link */
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.url-input-wrapper input:focus {
+    border-color: var(--primary);
+}
+/* ----------------------------------------- */
+
+.edit-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.edit-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.edit-input-group label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--on-surface-variant);
+}
+
+.edit-input-group input {
+    width: 100%; /* Toate input-urile vor fi la fel de late ca URL-ul */
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--outline-variant);
+    background: var(--surface-variant);
+    color: var(--on-surface);
+    outline: none;
+}
+
+.password-divider {
+    margin-top: 10px;
+    border-top: 1px dashed var(--outline-variant);
+    padding-top: 20px;
+}
+
+.action-save-btn {
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    background: var(--primary);
+    color: var(--on-primary);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.action-save-btn:hover {
+    opacity: 0.9;
+}
+
+.security-btn {
+    background: var(--tertiary, #444e3b);
+}
+
+@media (max-width: 850px) {
+    .edit-main-grid { grid-template-columns: 1fr; }
+}

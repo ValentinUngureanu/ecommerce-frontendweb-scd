@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { productService } from '../../api/productService';
 import Navbar from '../../components/layout/Navbar';
-import ProductCard from '../../components/ui/ProductCard';
-import { Filter, LayoutGrid, Tag, ChevronRight } from 'lucide-react';
+import ProductCard from '../../components/ui/ProductCard.jsx';
+import { Filter, LayoutGrid, ChevronRight, DollarSign } from 'lucide-react';
 import './Home.css';
 
 const Home = () => {
@@ -10,6 +10,10 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
     const [title, setTitle] = useState("Toate ofertele");
     const [activeCategory, setActiveCategory] = useState("Toate");
+
+    // --- STĂRI PENTRU FILTRARE PREȚ ---
+    const [minPrice, setMinPrice] = useState("");
+    const [maxPrice, setMaxPrice] = useState("");
 
     const categories = [
         "Electronice", "Fashion", "Casă & Grădină",
@@ -23,6 +27,8 @@ const Home = () => {
             setProducts(res.data);
             setTitle("Toate ofertele");
             setActiveCategory("Toate");
+            setMinPrice(""); // Resetăm prețurile la "Toate"
+            setMaxPrice("");
         } catch (err) {
             console.error(err);
         } finally {
@@ -33,6 +39,17 @@ const Home = () => {
     useEffect(() => {
         loadAll();
     }, []);
+
+    // --- LOGICA DE FILTRARE (FRONTEND) ---
+    // Folosim useMemo pentru a recalcula lista filtrată doar când se schimbă produsele sau prețul
+    const filteredProducts = useMemo(() => {
+        return products.filter(p => {
+            const price = p.price;
+            const min = minPrice === "" ? 0 : parseFloat(minPrice);
+            const max = maxPrice === "" ? Infinity : parseFloat(maxPrice);
+            return price >= min && price <= max;
+        });
+    }, [products, minPrice, maxPrice]);
 
     const handleSearch = async (query) => {
         if (!query.trim()) {
@@ -71,8 +88,8 @@ const Home = () => {
             <Navbar onSearch={handleSearch} />
 
             <div className="home-content">
-                {/* SIDEBAR CATEGORII */}
                 <aside className="sidebar">
+                    {/* SECȚIUNE CATEGORII */}
                     <div className="sidebar-section">
                         <div className="sidebar-title">
                             <LayoutGrid size={20} />
@@ -98,13 +115,45 @@ const Home = () => {
                             ))}
                         </div>
                     </div>
+
+                    {/* --- SECȚIUNE FILTRARE PREȚ --- */}
+                    <div className="sidebar-section price-filter-section">
+                        <div className="sidebar-title">
+                            <Filter size={20} />
+                            <span>Filtrare Preț</span>
+                        </div>
+                        <div className="price-inputs-container">
+                            <div className="price-field">
+                                <label>Min (RON)</label>
+                                <input
+                                    type="number"
+                                    placeholder="0"
+                                    value={minPrice}
+                                    onChange={(e) => setMinPrice(e.target.value)}
+                                />
+                            </div>
+                            <div className="price-field">
+                                <label>Max (RON)</label>
+                                <input
+                                    type="number"
+                                    placeholder="99999"
+                                    value={maxPrice}
+                                    onChange={(e) => setMaxPrice(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        {(minPrice || maxPrice) && (
+                            <button className="clear-price-btn" onClick={() => { setMinPrice(""); setMaxPrice(""); }}>
+                                Șterge filtrele de preț
+                            </button>
+                        )}
+                    </div>
                 </aside>
 
-                {/* MAIN FEED */}
                 <main className="main-feed">
                     <div className="feed-header">
                         <h2>{title}</h2>
-                        <span className="product-count">{products.length} produse găsite</span>
+                        <span className="product-count">{filteredProducts.length} produse găsite</span>
                     </div>
 
                     {loading ? (
@@ -114,17 +163,18 @@ const Home = () => {
                         </div>
                     ) : (
                         <div className="product-grid">
-                            {products.map(product => (
+                            {/* Randăm filteredProducts în loc de products */}
+                            {filteredProducts.map(product => (
                                 <ProductCard key={product.id} product={product} />
                             ))}
                         </div>
                     )}
 
-                    {!loading && products.length === 0 && (
+                    {!loading && filteredProducts.length === 0 && (
                         <div className="empty-state">
                             <h3>Nu am găsit niciun rezultat</h3>
-                            <p>Încearcă să cauți altceva sau să schimbi categoria.</p>
-                            <button onClick={loadAll} className="reset-btn">Resetează filtrele</button>
+                            <p>Încearcă să modifici prețul sau să schimbi categoria.</p>
+                            <button onClick={loadAll} className="reset-btn">Resetează tot</button>
                         </div>
                     )}
                 </main>

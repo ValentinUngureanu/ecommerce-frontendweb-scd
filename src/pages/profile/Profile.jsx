@@ -3,15 +3,18 @@ import { authService } from '../../api/authService';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/layout/Navbar';
 import MyProducts from './MyProducts';
+import OrderHistory from './OrderHistory';
+import AdminDashboard from './AdminDashboard'; // IMPORTĂ NOUA COMPONENTĂ
 import {
     User, Mail, MapPin, Phone,
-    LogOut, Settings, Package
+    LogOut, Settings, Package, ShoppingBag, List, ShieldCheck
 } from 'lucide-react';
 import './Profile.css';
 
 const Profile = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState(authService.getCurrentUser());
+    const [activeTab, setActiveTab] = useState('products');
 
     useEffect(() => {
         if (!user) {
@@ -37,10 +40,22 @@ const Profile = () => {
                     <aside className="profile-sidebar">
                         <div className="user-card-main">
                             <div className="profile-avatar-large">
-                                {user.username.charAt(0).toUpperCase()}
+                                {user.profilePictureUrl ? (
+                                    <img
+                                        src={user.profilePictureUrl}
+                                        alt={user.username}
+                                        className="avatar-img-full"
+                                        onError={(e) => {
+                                            e.target.style.display = 'none';
+                                            e.target.parentElement.innerHTML = user.username.charAt(0).toUpperCase();
+                                        }}
+                                    />
+                                ) : (
+                                    user.username.charAt(0).toUpperCase()
+                                )}
                             </div>
                             <h2>{user.username}</h2>
-                            <p className="user-role">Membru XCart</p>
+                            <p className="user-role">{user.role === 'ADMIN' ? 'Administrator' : 'Membru XCart'}</p>
                         </div>
 
                         <div className="profile-details-list">
@@ -68,7 +83,7 @@ const Profile = () => {
                         </div>
 
                         <div className="sidebar-actions">
-                            <button className="edit-btn">
+                            <button className="edit-btn" onClick={() => navigate('/edit-profile')}>
                                 <Settings size={18} /> Setări
                             </button>
                             <button className="logout-btn-profile" onClick={handleLogout}>
@@ -77,17 +92,61 @@ const Profile = () => {
                         </div>
                     </aside>
 
-                    {/* MAIN: ANUNȚURILE MELE */}
+                    {/* MAIN AREA CU TAB-URI */}
                     <section className="profile-main-area">
                         <div className="welcome-banner">
-                            <Package size={24} />
+                            {/* Iconița se schimbă în funcție de tab-ul activ */}
+                            {activeTab === 'products' && <Package size={24} />}
+                            {activeTab === 'orders' && <ShoppingBag size={24} />}
+                            {activeTab === 'admin' && <ShieldCheck size={24} />}
+
                             <div>
-                                <h3>Panou Vânzător</h3>
-                                <p>Aici poți gestiona toate produsele pe care le-ai adăugat în bazar.</p>
+                                <h3>
+                                    {activeTab === 'products' && 'Panou Vânzător'}
+                                    {activeTab === 'orders' && 'Istoric Cumpărături'}
+                                    {activeTab === 'admin' && 'Control Panel Admin'}
+                                </h3>
+                                <p>
+                                    {activeTab === 'products' && 'Gestionați produsele listate la vânzare.'}
+                                    {activeTab === 'orders' && 'Vizualizați toate comenzile plasate.'}
+                                    {activeTab === 'admin' && 'Gestionați utilizatorii și securitatea platformei.'}
+                                </p>
                             </div>
                         </div>
 
-                        <MyProducts />
+                        {/* NAVIGARE TAB-URI */}
+                        <div className="profile-tabs-nav">
+                            <button
+                                className={`tab-nav-item ${activeTab === 'products' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('products')}
+                            >
+                                <List size={18} /> Anunțuri
+                            </button>
+
+                            <button
+                                className={`tab-nav-item ${activeTab === 'orders' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('orders')}
+                            >
+                                <ShoppingBag size={18} /> Comenzi
+                            </button>
+
+                            {/* --- TAB DOAR PENTRU ADMIN --- */}
+                            {user.role === 'ADMIN' && (
+                                <button
+                                    className={`tab-nav-item admin-tab-btn ${activeTab === 'admin' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('admin')}
+                                >
+                                    <ShieldCheck size={18} /> Admin Panel
+                                </button>
+                            )}
+                        </div>
+
+                        {/* CONȚINUT DINAMIC: Aici se schimbă ecranele */}
+                        <div className="tab-container-content">
+                            {activeTab === 'products' && <MyProducts />}
+                            {activeTab === 'orders' && <OrderHistory />}
+                            {activeTab === 'admin' && user.role === 'ADMIN' && <AdminDashboard />}
+                        </div>
                     </section>
 
                 </div>

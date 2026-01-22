@@ -1,0 +1,78 @@
+/* Stil Tab-uri */
+.admin-tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--outline-variant);
+    padding-bottom: 10px;
+}
+
+.admin-tabs button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--on-surface-variant);
+    border-radius: 12px;
+    transition: all 0.2s;
+}
+
+.admin-tabs button.active {
+    background-color: var(--primary);
+    color: var(--on-primary);
+}
+
+/* Tabel comun */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    text-align: left;
+    padding: 12px;
+    background-color: rgba(var(--primary-rgb), 0.05);
+}
+
+.admin-table td {
+    padding: 15px 12px;
+    border-bottom: 1px solid var(--outline-variant);
+}
+
+/* Imagine Produs în tabel */
+.admin-prod-img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.prod-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.prod-info span {
+    font-size: 0.8rem;
+    color: var(--on-surface-variant);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.delete-btn {
+    color: #BA1A1A;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.delete-btn:hover {
+    background-color: #fdeaea;
+}
