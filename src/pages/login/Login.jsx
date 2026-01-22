@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, LogIn, ArrowLeft, Eye, EyeOff } from 'lucide-react';
-import { authService } from '../../api/authService'; // Asigură-te că serviciul este importat
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {ArrowLeft, Eye, EyeOff, Lock, LogIn, Mail} from 'lucide-react';
+import {authService} from '../../api/authService';
 import './Login.css';
 
 const Login = () => {
@@ -15,26 +15,18 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(""); // Resetăm erorile vechi
+        setError("");
 
         try {
-            // APELUL CĂTRE BACKEND (Aici era lipsa)
             const response = await authService.login(formData.email, formData.password);
 
             if (response.data) {
-                console.log("Login succesful:", response.data);
-
-                // Salvăm datele utilizatorului în browser
                 localStorage.setItem('user', JSON.stringify(response.data));
-
-                // Redirecționăm către Home
                 navigate('/');
-                // Opțional: refresh pentru a forța Navbar-ul să vadă userul logat
                 window.location.reload();
             }
         } catch (err) {
             console.error("Eroare la autentificare:", err);
-            // Verificăm ce eroare ne dă Spring Boot
             if (err.response && err.response.status === 401) {
                 setError("Email sau parolă incorectă!");
             } else {
@@ -46,7 +38,7 @@ const Login = () => {
     return (
         <div className="login-page">
             <button className="back-btn" onClick={() => navigate('/')}>
-                <ArrowLeft size={20} />
+                <ArrowLeft size={20}/>
                 <span>Înapoi la magazin</span>
             </button>
 
@@ -57,14 +49,13 @@ const Login = () => {
                     <p>Intră în contul tău XCart</p>
                 </div>
 
-                {/* Afișăm eroarea dacă există */}
                 {error && <div className="error-message-box">{error}</div>}
 
                 <form onSubmit={handleSubmit} className="login-form">
                     <div className="input-group">
                         <label>Email</label>
                         <div className="input-wrapper">
-                            <Mail size={20} className="input-icon" />
+                            <Mail size={20} className="input-icon"/>
                             <input
                                 type="email"
                                 placeholder="nume@exemplu.com"
@@ -78,7 +69,7 @@ const Login = () => {
                     <div className="input-group">
                         <label>Parolă</label>
                         <div className="input-wrapper">
-                            <Lock size={20} className="input-icon" />
+                            <Lock size={20} className="input-icon"/>
                             <input
                                 type={showPassword ? "text" : "password"}
                                 placeholder="••••••••"
@@ -91,27 +82,30 @@ const Login = () => {
                                 className="toggle-password"
                                 onClick={() => setShowPassword(!showPassword)}
                             >
-                                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                {showPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
                             </button>
                         </div>
                     </div>
 
                     <div className="form-options">
                         <label className="remember-me">
-                            <input type="checkbox" />
+                            <input type="checkbox"/>
                             <span>Ține-mă minte</span>
                         </label>
                         <a href="/forgot-password">Ai uitat parola?</a>
                     </div>
 
                     <button type="submit" className="login-submit-btn">
-                        <LogIn size={20} />
+                        <LogIn size={20}/>
                         Autentificare
                     </button>
                 </form>
 
                 <div className="login-footer">
-                    <p>Nu ai un cont? <a href="/register" onClick={(e) => { e.preventDefault(); navigate('/register'); }}>Creează cont nou</a></p>
+                    <p>Nu ai un cont? <a href="/register" onClick={(e) => {
+                        e.preventDefault();
+                        navigate('/register');
+                    }}>Creează cont nou</a></p>
                 </div>
             </div>
         </div>

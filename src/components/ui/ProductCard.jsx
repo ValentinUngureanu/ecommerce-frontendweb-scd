@@ -12,31 +12,25 @@ const ProductCard = ({ product }) => {
     const imageUrl = product.imageUrl || 'https://via.placeholder.com/300x200?text=XCart';
 
     const handleQuickAdd = async (e) => {
-        // Oprim navigarea către pagina de detalii a produsului
         e.stopPropagation();
 
         if (!user) {
-            // Nu mai afișăm alert(), trimitem direct la login
             navigate('/login');
             return;
         }
 
         try {
-            // Apel către backend (CartController.java)
             await productService.addToCart(user.id, product.id);
 
-            // --- NOTIFICARE PERSONALIZATĂ (FĂRĂ ALERT) ---
             window.dispatchEvent(new CustomEvent('app-notification', {
                 detail: { message: `"${product.name}" a fost adăugat în coș!` }
             }));
 
-            // Actualizează badge-ul cu cifra de la coș în Navbar
             window.dispatchEvent(new Event('cartUpdated'));
 
         } catch (err) {
             console.error("Eroare adăugare rapidă:", err);
 
-            // Notificare de eroare (opțional, poți folosi tot sistemul de notificări)
             window.dispatchEvent(new CustomEvent('app-notification', {
                 detail: { message: `Eroare la adăugarea "${product.name}" în coș.` }
             }));

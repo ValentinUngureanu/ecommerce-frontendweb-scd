@@ -73,12 +73,11 @@
     color: var(--primary);
 }
 
-/* --- MODIFICARE AICI: URL FIELD MAI LAT --- */
 .url-input-wrapper {
     position: relative;
     display: flex;
     align-items: center;
-    width: 100%; /* Se asigură că ocupă tot spațiul cardului */
+    width: 100%;
 }
 
 .url-icon {
@@ -89,13 +88,13 @@
 }
 
 .url-input-wrapper input {
-    width: 100%; /* Câmpul se întinde pe toată lățimea disponibilă */
-    padding: 12px 16px 12px 42px !important; /* Spațiu generos în stânga pentru iconiță */
+    width: 100%;
+    padding: 12px 16px 12px 42px !important;
     border-radius: 12px;
     border: 1px solid var(--outline-variant);
     background: var(--surface-variant);
     color: var(--on-surface);
-    font-size: 0.9rem; /* Puțin mai mic pentru a vedea mai mult din link */
+    font-size: 0.9rem;
     outline: none;
     transition: border-color 0.2s;
 }
@@ -103,7 +102,6 @@
 .url-input-wrapper input:focus {
     border-color: var(--primary);
 }
-/* ----------------------------------------- */
 
 .edit-form-content {
     display: flex;
@@ -125,7 +123,7 @@
 }
 
 .edit-input-group input {
-    width: 100%; /* Toate input-urile vor fi la fel de late ca URL-ul */
+    width: 100%;
     padding: 12px 16px;
     border-radius: 12px;
     border: 1px solid var(--outline-variant);
@@ -164,5 +162,7 @@
 }
 
 @media (max-width: 850px) {
-    .edit-main-grid { grid-template-columns: 1fr; }
+    .edit-main-grid {
+        grid-template-columns: 1fr;
+    }
 }

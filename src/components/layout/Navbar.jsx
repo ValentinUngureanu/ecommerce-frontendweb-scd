@@ -41,7 +41,6 @@ export default function Navbar({ onSearch }) {
         localStorage.setItem('theme', theme);
     }, [isDark]);
 
-    // Listener pentru actualizarea profilului în timp real în Navbar
     useEffect(() => {
         const updateUserData = () => {
             setUser(authService.getCurrentUser());

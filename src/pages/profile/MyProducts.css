@@ -5,11 +5,10 @@
     margin-top: 20px;
 }
 
-/* Containerul principal al fiecărui rând de produs */
 .my-product-item {
     display: flex;
     align-items: center;
-    background: var(--surface); /* Folosește variabila ta de fundal alb/crem */
+    background: var(--surface);
     border-radius: 16px;
     padding: 12px 20px;
     border: 1px solid var(--outline-variant);
@@ -21,18 +20,17 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* REPARAREA IMAGINII MARI */
 .item-preview {
     display: flex;
     align-items: center;
     gap: 20px;
-    flex: 1; /* Ocupă tot spațiul până la butoane */
+    flex: 1;
 }
 
 .item-preview img {
-    width: 80px;         /* Lățime fixă mică */
-    height: 80px;        /* Înălțime fixă mică */
-    object-fit: contain; /* Păstrează proporțiile imaginii fără să o taie */
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
     background: white;
     border-radius: 12px;
     padding: 5px;
@@ -55,11 +53,10 @@
 
 .item-price {
     font-weight: 900;
-    color: #444e3b; /* Culoarea verde închis din tema ta */
+    color: #444e3b;
     font-size: 1rem;
 }
 
-/* ZONA DE BUTOANE */
 .my-product-actions {
     display: flex;
     gap: 10px;
@@ -78,7 +75,7 @@
 }
 
 .edit-btn {
-    background: var(--surface-variant); /* Fundal gri deschis */
+    background: var(--surface-variant);
     color: var(--on-surface-variant);
 }
 
@@ -97,11 +94,11 @@
     color: white;
 }
 
-/* Ascunde textul "Editează" pe ecrane foarte mici pentru a păstra layout-ul */
 @media (max-width: 600px) {
     .edit-btn span {
         display: none;
     }
+
     .my-product-item {
         padding: 10px;
     }

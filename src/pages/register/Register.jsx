@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, UserPlus, ArrowLeft, Eye, EyeOff, Phone, MapPin, ShieldAlert } from 'lucide-react';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {ArrowLeft, Eye, EyeOff, Lock, Mail, MapPin, Phone, ShieldAlert, User, UserPlus} from 'lucide-react';
 import axios from 'axios';
 import './Register.css';
 
@@ -9,21 +9,14 @@ const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
 
-    // State-uri pentru funcția secretă
     const [adminCode, setAdminCode] = useState("");
     const [isAdminVisible, setIsAdminVisible] = useState(false);
     const [clickCount, setClickCount] = useState(0);
 
     const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        phone: '',
-        location: ''
+        username: '', email: '', password: '', confirmPassword: '', phone: '', location: ''
     });
 
-    // Funcția care activează câmpul secret după 5 click-uri pe logo
     const handleLogoClick = () => {
         setClickCount(prev => prev + 1);
         if (clickCount + 1 === 5) {
@@ -42,9 +35,8 @@ const Register = () => {
         }
 
         try {
-            const { confirmPassword, ...dataToSubmit } = formData;
+            const {confirmPassword, ...dataToSubmit} = formData;
 
-            // Trimitem adminCode ca query parameter către backend
             await axios.post(`http://localhost:8080/api/users/register?adminCode=${adminCode}`, dataToSubmit);
 
             alert("Cont creat cu succes!");
@@ -54,16 +46,14 @@ const Register = () => {
         }
     };
 
-    return (
-        <div className="register-page">
+    return (<div className="register-page">
             <button className="back-btn" onClick={() => navigate('/')}>
-                <ArrowLeft size={20} />
+                <ArrowLeft size={20}/>
                 <span>Înapoi la magazin</span>
             </button>
 
             <div className="register-card">
                 <div className="register-header">
-                    {/* Logoul interactiv */}
                     <div
                         className="register-logo"
                         onClick={handleLogoClick}
@@ -81,7 +71,7 @@ const Register = () => {
                     <div className="input-group">
                         <label>Nume Utilizator</label>
                         <div className="input-wrapper">
-                            <User size={20} className="input-icon" />
+                            <User size={20} className="input-icon"/>
                             <input
                                 type="text"
                                 placeholder="Utilizator"
@@ -95,7 +85,7 @@ const Register = () => {
                     <div className="input-group">
                         <label>Email</label>
                         <div className="input-wrapper">
-                            <Mail size={20} className="input-icon" />
+                            <Mail size={20} className="input-icon"/>
                             <input
                                 type="email"
                                 placeholder="nume@exemplu.com"
@@ -109,7 +99,7 @@ const Register = () => {
                     <div className="input-group">
                         <label>Telefon</label>
                         <div className="input-wrapper">
-                            <Phone size={20} className="input-icon" />
+                            <Phone size={20} className="input-icon"/>
                             <input
                                 type="text"
                                 placeholder="07xxxxxxxx"
@@ -122,7 +112,7 @@ const Register = () => {
                     <div className="input-group">
                         <label>Locație</label>
                         <div className="input-wrapper">
-                            <MapPin size={20} className="input-icon" />
+                            <MapPin size={20} className="input-icon"/>
                             <input
                                 type="text"
                                 placeholder="Oraș, Județ"
@@ -132,12 +122,10 @@ const Register = () => {
                         </div>
                     </div>
 
-                    {/* Câmpul de ADMIN - Apare doar după 5 click-uri pe logo */}
-                    {isAdminVisible && (
-                        <div className="input-group admin-code-group animated-fade-in">
+                    {isAdminVisible && (<div className="input-group admin-code-group animated-fade-in">
                             <label>Cod Invitație Admin</label>
                             <div className="input-wrapper">
-                                <ShieldAlert size={20} className="input-icon" />
+                                <ShieldAlert size={20} className="input-icon"/>
                                 <input
                                     type="password"
                                     placeholder="Introdu codul secret"
@@ -146,13 +134,12 @@ const Register = () => {
                                     autoFocus
                                 />
                             </div>
-                        </div>
-                    )}
+                        </div>)}
 
                     <div className="input-group">
                         <label>Parolă</label>
                         <div className="input-wrapper">
-                            <Lock size={20} className="input-icon" />
+                            <Lock size={20} className="input-icon"/>
                             <input
                                 type={showPassword ? "text" : "password"}
                                 placeholder="Parolă"
@@ -160,8 +147,9 @@ const Register = () => {
                                 onChange={(e) => setFormData({...formData, password: e.target.value})}
                                 required
                             />
-                            <button type="button" className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
-                                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                            <button type="button" className="toggle-password"
+                                    onClick={() => setShowPassword(!showPassword)}>
+                                {showPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
                             </button>
                         </div>
                     </div>
@@ -169,7 +157,7 @@ const Register = () => {
                     <div className="input-group">
                         <label>Confirmă Parola</label>
                         <div className="input-wrapper">
-                            <Lock size={20} className="input-icon" />
+                            <Lock size={20} className="input-icon"/>
                             <input
                                 type={showPassword ? "text" : "password"}
                                 placeholder="Repetă parola"
@@ -181,7 +169,7 @@ const Register = () => {
                     </div>
 
                     <button type="submit" className="register-submit-btn">
-                        <UserPlus size={20} />
+                        <UserPlus size={20}/>
                         Creează Cont
                     </button>
                 </form>
@@ -190,8 +178,7 @@ const Register = () => {
                     <p>Ai deja un cont? <a href="/login">Autentifică-te</a></p>
                 </div>
             </div>
-        </div>
-    );
+        </div>);
 };
 
 export default Register;

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { productService } from '../../api/productService.js';
-import { authService } from '../../api/authService.js';
-import { Package, Calendar, Tag, CreditCard, ChevronDown, ChevronUp } from 'lucide-react';
+import React, {useEffect, useState} from 'react';
+import {productService} from '../../api/productService.js';
+import {authService} from '../../api/authService.js';
+import {Calendar, ChevronDown, ChevronUp, Package} from 'lucide-react';
 import './OrderHistory.css';
 
 const OrderHistory = () => {
@@ -34,18 +34,19 @@ const OrderHistory = () => {
         <div className="order-history-section">
             {orders.length === 0 ? (
                 <div className="no-orders">
-                    <Package size={40} />
+                    <Package size={40}/>
                     <p>Nu ai plasat nicio comandă încă.</p>
                 </div>
             ) : (
                 <div className="orders-container">
                     {orders.map(order => (
-                        <div key={order.id} className={`order-group-card ${expandedOrder === order.id ? 'active' : ''}`}>
+                        <div key={order.id}
+                             className={`order-group-card ${expandedOrder === order.id ? 'active' : ''}`}>
                             <div className="order-summary" onClick={() => toggleOrder(order.id)}>
                                 <div className="order-info">
                                     <span className="order-id">{order.orderNumber}</span>
                                     <div className="order-meta">
-                                        <Calendar size={14} />
+                                        <Calendar size={14}/>
                                         <span>{new Date(order.createdAt).toLocaleDateString('ro-RO')}</span>
                                     </div>
                                 </div>
@@ -53,7 +54,7 @@ const OrderHistory = () => {
                                     <div className="order-price-total">
                                         {order.totalAmount.toFixed(2)} RON
                                     </div>
-                                    {expandedOrder === order.id ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                                    {expandedOrder === order.id ? <ChevronUp size={20}/> : <ChevronDown size={20}/>}
                                 </div>
                             </div>
 
@@ -62,7 +63,8 @@ const OrderHistory = () => {
                                     <div className="items-list">
                                         {order.items.map(item => (
                                             <div key={item.id} className="order-item-row">
-                                                <img src={item.product.imageUrl} alt={item.product.name} className="item-mini-img" />
+                                                <img src={item.product.imageUrl} alt={item.product.name}
+                                                     className="item-mini-img"/>
                                                 <div className="item-text">
                                                     <h5>{item.product.name}</h5>
                                                     <p>{item.quantity} x {item.priceAtPurchase} RON</p>

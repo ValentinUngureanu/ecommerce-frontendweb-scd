@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { productService } from '../../api/productService';
-import { authService } from '../../api/authService';
+import React, {useEffect, useState} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
+import {productService} from '../../api/productService';
+import {authService} from '../../api/authService';
 import Navbar from '../../components/layout/Navbar';
-import { ArrowLeft, Save, Tag, DollarSign, Image as ImageIcon, AlignLeft, Layers, AlertCircle } from 'lucide-react';
+import {AlertCircle, AlignLeft, ArrowLeft, DollarSign, Image as ImageIcon, Layers, Save, Tag} from 'lucide-react';
 import './EditProduct.css';
 
 const EditProduct = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const currentUser = authService.getCurrentUser();
@@ -38,8 +38,8 @@ const EditProduct = () => {
     }, [id, navigate]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        const {name, value} = e.target;
+        setFormData(prev => ({...prev, [name]: value}));
     };
 
     const handleSubmit = async (e) => {
@@ -51,11 +51,10 @@ const EditProduct = () => {
         }
 
         try {
-            // Trimitem: ID Produs, ID User (pentru verificare posesor) și Datele noi
             await productService.update(id, currentUser.id, formData);
 
             window.dispatchEvent(new CustomEvent('app-notification', {
-                detail: { message: "Anunțul a fost actualizat cu succes! ✨" }
+                detail: {message: "Anunțul a fost actualizat cu succes! ✨"}
             }));
 
             navigate('/profile');
@@ -74,12 +73,12 @@ const EditProduct = () => {
 
     return (
         <div className="edit-product-page">
-            <Navbar />
+            <Navbar/>
 
             <div className="edit-product-content">
                 <header className="edit-page-header">
                     <button className="back-navigation" onClick={() => navigate(-1)}>
-                        <ArrowLeft size={20} />
+                        <ArrowLeft size={20}/>
                         <span>Înapoi la profil</span>
                     </button>
                     <div className="header-text">
@@ -91,7 +90,6 @@ const EditProduct = () => {
                 <form onSubmit={handleSubmit} className="edit-main-card">
                     <div className="edit-layout-grid">
 
-                        {/* COLOANA STÂNGA: VIZUAL */}
                         <aside className="edit-visual-side">
                             <div className="image-preview-container">
                                 <label className="field-label">Imagine Curentă</label>
@@ -104,13 +102,13 @@ const EditProduct = () => {
                                         />
                                     ) : (
                                         <div className="empty-image-state">
-                                            <ImageIcon size={48} />
+                                            <ImageIcon size={48}/>
                                             <span>Nicio imagine</span>
                                         </div>
                                     )}
                                 </div>
                                 <div className="input-field-wrapper">
-                                    <label><ImageIcon size={14} /> Link Imagine (URL)</label>
+                                    <label><ImageIcon size={14}/> Link Imagine (URL)</label>
                                     <input
                                         type="text"
                                         name="imageUrl"
@@ -122,11 +120,10 @@ const EditProduct = () => {
                             </div>
                         </aside>
 
-                        {/* COLOANA DREAPTĂ: DATE */}
                         <section className="edit-details-side">
                             <div className="details-group">
                                 <div className="input-field-wrapper full-width">
-                                    <label><Tag size={14} /> Nume Produs</label>
+                                    <label><Tag size={14}/> Nume Produs</label>
                                     <input
                                         type="text"
                                         name="name"
@@ -138,7 +135,7 @@ const EditProduct = () => {
 
                                 <div className="fields-row">
                                     <div className="input-field-wrapper">
-                                        <label><DollarSign size={14} /> Preț (RON)</label>
+                                        <label><DollarSign size={14}/> Preț (RON)</label>
                                         <input
                                             type="number"
                                             name="price"
@@ -148,7 +145,7 @@ const EditProduct = () => {
                                         />
                                     </div>
                                     <div className="input-field-wrapper">
-                                        <label><Layers size={14} /> Categorie</label>
+                                        <label><Layers size={14}/> Categorie</label>
                                         <select name="category" value={formData.category} onChange={handleChange}>
                                             {categories.map(cat => (
                                                 <option key={cat} value={cat}>{cat}</option>
@@ -158,7 +155,7 @@ const EditProduct = () => {
                                 </div>
 
                                 <div className="input-field-wrapper full-width">
-                                    <label><AlignLeft size={14} /> Descriere</label>
+                                    <label><AlignLeft size={14}/> Descriere</label>
                                     <textarea
                                         name="description"
                                         rows="10"
@@ -171,11 +168,11 @@ const EditProduct = () => {
 
                             <footer className="form-actions">
                                 <div className="info-notice">
-                                    <AlertCircle size={16} />
+                                    <AlertCircle size={16}/>
                                     <span>Asigură-te că datele sunt corecte înainte de a salva.</span>
                                 </div>
                                 <button type="submit" className="save-action-btn">
-                                    <Save size={20} />
+                                    <Save size={20}/>
                                     <span>Actualizează Anunțul</span>
                                 </button>
                             </footer>

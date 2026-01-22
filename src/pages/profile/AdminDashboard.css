@@ -1,4 +1,3 @@
-/* Stil Tab-uri */
 .admin-tabs {
     display: flex;
     gap: 15px;
@@ -26,7 +25,6 @@
     color: var(--on-primary);
 }
 
-/* Tabel comun */
 .admin-table {
     width: 100%;
     border-collapse: collapse;
@@ -43,7 +41,6 @@
     border-bottom: 1px solid var(--outline-variant);
 }
 
-/* Imagine Produs în tabel */
 .admin-prod-img {
     width: 50px;
     height: 50px;

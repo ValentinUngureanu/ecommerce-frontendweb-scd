@@ -4,19 +4,17 @@ const API_URL = 'http://localhost:8080/api/users';
 
 export const authService = {
     login: async (email, password) => {
-        return axios.post(`${API_URL}/login`, { email, password });
+        return axios.post(`${API_URL}/login`, {email, password});
     },
 
     register: async (userData) => {
         return axios.post(`${API_URL}/register`, userData);
     },
 
-    // Sincronizat cu @PutMapping("/{id}") din UserController.java
     updateProfile: async (id, userData) => {
         const response = await axios.put(`${API_URL}/${id}`, userData);
 
         if (response.data) {
-            // Actualizăm starea locală pentru a reflecta schimbările instantaneu
             localStorage.setItem('user', JSON.stringify(response.data));
         }
 

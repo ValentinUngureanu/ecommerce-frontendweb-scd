@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import { authService } from '../../api/authService';
-import { productService } from "../../api/productService.js";
-import { Users, ShoppingBag, Trash2, ShieldCheck, Tag, UserCheck } from 'lucide-react';
+import {authService} from '../../api/authService';
+import {productService} from "../../api/productService.js";
+import {ShieldCheck, ShoppingBag, Tag, Trash2, UserCheck, Users} from 'lucide-react';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -12,7 +12,6 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(true);
     const admin = authService.getCurrentUser();
 
-    // Încărcare date în funcție de tab-ul activ
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -33,24 +32,18 @@ const AdminDashboard = () => {
         fetchData();
     }, [activeTab, admin.id]);
 
-    // --- FUNCȚIE HELPER PENTRU NOTIFICĂRI NAVBAR ---
     const sendNavNotif = (msg) => {
         const notifEvent = new CustomEvent('app-notification', {
-            detail: { message: msg }
+            detail: {message: msg}
         });
         window.dispatchEvent(notifEvent);
     };
 
-    // --- LOGICĂ ȘTERGERE UTILIZATOR (NOU) ---
     const handleDeleteUser = async (userId, userName) => {
         if (window.confirm(`Ești sigur că vrei să elimini definitiv utilizatorul "${userName}"?`)) {
             try {
                 await axios.delete(`http://localhost:8080/api/users/${userId}?requesterId=${admin.id}`);
-
-                // Actualizăm lista de utilizatori local
                 setUsers(users.filter(u => u.id !== userId));
-
-                // Trimitem notificarea în Navbar
                 sendNavNotif(`Utilizatorul "${userName}" a fost șters cu succes de pe platformă.`);
             } catch (err) {
                 sendNavNotif(`Eroare la ștergerea utilizatorului "${userName}".`);
@@ -58,14 +51,11 @@ const AdminDashboard = () => {
         }
     };
 
-    // --- LOGICĂ ȘTERGERE PRODUS ---
     const handleDeleteProduct = async (productId, productName) => {
         if (window.confirm(`Sigur vrei să ștergi produsul "${productName}"?`)) {
             try {
                 await productService.delete(productId, admin.id);
                 setProducts(products.filter(p => p.id !== productId));
-
-                // Trimitem notificarea în Navbar
                 sendNavNotif(`Produsul "${productName}" a fost eliminat de către administrator.`);
             } catch (err) {
                 sendNavNotif(`Eroare la ștergerea produsului "${productName}".`);
@@ -82,18 +72,17 @@ const AdminDashboard = () => {
                     className={activeTab === 'users' ? 'active' : ''}
                     onClick={() => setActiveTab('users')}
                 >
-                    <Users size={18} /> Utilizatori
+                    <Users size={18}/> Utilizatori
                 </button>
                 <button
                     className={activeTab === 'products' ? 'active' : ''}
                     onClick={() => setActiveTab('products')}
                 >
-                    <ShoppingBag size={18} /> Produse
+                    <ShoppingBag size={18}/> Produse
                 </button>
             </div>
 
             {activeTab === 'users' ? (
-                /* TABEL UTILIZATORI */
                 <table className="admin-table">
                     <thead>
                     <tr>
@@ -115,18 +104,17 @@ const AdminDashboard = () => {
                             <td>{u.email}</td>
                             <td>
                                     <span className={`role-badge ${u.role}`}>
-                                        {u.role === 'ADMIN' ? <ShieldCheck size={14} /> : <UserCheck size={14} />}
+                                        {u.role === 'ADMIN' ? <ShieldCheck size={14}/> : <UserCheck size={14}/>}
                                         {u.role}
                                     </span>
                             </td>
                             <td>
-                                {/* Un admin nu se poate șterge pe el însuși din listă */}
                                 {u.id !== admin.id && (
                                     <button
                                         className="delete-btn"
                                         onClick={() => handleDeleteUser(u.id, u.username)}
                                     >
-                                        <Trash2 size={18} />
+                                        <Trash2 size={18}/>
                                     </button>
                                 )}
                             </td>
@@ -135,7 +123,6 @@ const AdminDashboard = () => {
                     </tbody>
                 </table>
             ) : (
-                /* TABEL PRODUSE */
                 <table className="admin-table">
                     <thead>
                     <tr>
@@ -149,7 +136,7 @@ const AdminDashboard = () => {
                     <tbody>
                     {products.map(p => (
                         <tr key={p.id}>
-                            <td><img src={p.imageUrl} alt="" className="admin-prod-img" /></td>
+                            <td><img src={p.imageUrl} alt="" className="admin-prod-img"/></td>
                             <td>
                                 <div className="prod-info">
                                     <strong>{p.name}</strong>

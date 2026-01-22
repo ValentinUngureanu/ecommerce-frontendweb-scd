@@ -6,7 +6,6 @@ const CART_URL = `${BASE_URL}/cart`;
 const ORDER_URL = `${BASE_URL}/orders`;
 
 export const productService = {
-    // === SECȚIUNE PRODUSE ===
 
     getAll: () => {
         return axios.get(API_URL);
@@ -25,50 +24,47 @@ export const productService = {
     },
 
     delete: (id, userId) => {
-        return axios.delete(`${API_URL}/delete/${id}`, { params: { userId } });
+        return axios.delete(`${API_URL}/delete/${id}`, {params: {userId}});
     },
 
     update: (id, userId, productData) => {
         return axios.put(`${API_URL}/update/${id}`, productData, {
-            params: { userId }
+            params: {userId}
         });
     },
 
     search: (name) => {
-        return axios.get(`${API_URL}/search`, { params: { name } });
+        return axios.get(`${API_URL}/search`, {params: {name}});
     },
 
     getByCategory: (category) => {
         return axios.get(`${API_URL}/category/${category}`);
     },
 
-    // NOU: Funcția de traducere AI
     translateDescription: (id) => {
         return axios.get(`${API_URL}/${id}/translate`);
     },
 
-    // === SECȚIUNE COȘ DE CUMPĂRĂTURI ===
 
     getCart: (userId) => {
         return axios.get(`${CART_URL}/user/${userId}`);
     },
 
     addToCart: (userId, productId) => {
-        return axios.post(`${CART_URL}/add`, { userId, productId });
+        return axios.post(`${CART_URL}/add`, {userId, productId});
     },
 
     updateCartQuantity: (cartItemId, quantity) => {
-        return axios.put(`${CART_URL}/update/${cartItemId}`, { quantity });
+        return axios.put(`${CART_URL}/update/${cartItemId}`, {quantity});
     },
 
     removeFromCart: (cartItemId) => {
         return axios.delete(`${CART_URL}/delete/${cartItemId}`);
     },
 
-    // === SECȚIUNE COMENZI ===
 
     placeOrder: (userId) => {
-        return axios.post(`${ORDER_URL}/place`, null, { params: { userId } });
+        return axios.post(`${ORDER_URL}/place`, null, {params: {userId}});
     },
 
     getOrdersByUser: (userId) => {

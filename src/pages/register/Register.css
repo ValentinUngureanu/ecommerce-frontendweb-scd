@@ -116,7 +116,6 @@
     border-color: var(--primary);
 }
 
-/* Stil pentru câmpul secret de Admin */
 .admin-code-group {
     border: 2px dashed var(--primary);
     padding: 12px;
@@ -134,8 +133,14 @@
 }
 
 @keyframes fadeInSlide {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .toggle-password {

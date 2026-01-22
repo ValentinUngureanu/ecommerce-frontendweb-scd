@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { authService } from '../../api/authService';
-import { useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {authService} from '../../api/authService';
+import {useNavigate} from 'react-router-dom';
 import Navbar from '../../components/layout/Navbar';
 import MyProducts from './MyProducts';
 import OrderHistory from './OrderHistory';
-import AdminDashboard from './AdminDashboard'; // IMPORTĂ NOUA COMPONENTĂ
-import {
-    User, Mail, MapPin, Phone,
-    LogOut, Settings, Package, ShoppingBag, List, ShieldCheck
-} from 'lucide-react';
+import AdminDashboard from './AdminDashboard';
+import {List, LogOut, Mail, MapPin, Package, Phone, Settings, ShieldCheck, ShoppingBag} from 'lucide-react';
 import './Profile.css';
 
 const Profile = () => {
@@ -31,12 +28,11 @@ const Profile = () => {
 
     return (
         <div className="profile-page">
-            <Navbar />
+            <Navbar/>
 
             <main className="profile-content">
                 <div className="profile-grid">
 
-                    {/* SIDEBAR: INFO UTILIZATOR */}
                     <aside className="profile-sidebar">
                         <div className="user-card-main">
                             <div className="profile-avatar-large">
@@ -60,21 +56,21 @@ const Profile = () => {
 
                         <div className="profile-details-list">
                             <div className="detail-item">
-                                <Mail size={20} />
+                                <Mail size={20}/>
                                 <div>
                                     <label>Email</label>
                                     <p>{user.email}</p>
                                 </div>
                             </div>
                             <div className="detail-item">
-                                <Phone size={20} />
+                                <Phone size={20}/>
                                 <div>
                                     <label>Telefon</label>
                                     <p>{user.phone || 'Nesetat'}</p>
                                 </div>
                             </div>
                             <div className="detail-item">
-                                <MapPin size={20} />
+                                <MapPin size={20}/>
                                 <div>
                                     <label>Locație</label>
                                     <p>{user.location || 'Nesetată'}</p>
@@ -84,21 +80,19 @@ const Profile = () => {
 
                         <div className="sidebar-actions">
                             <button className="edit-btn" onClick={() => navigate('/edit-profile')}>
-                                <Settings size={18} /> Setări
+                                <Settings size={18}/> Setări
                             </button>
                             <button className="logout-btn-profile" onClick={handleLogout}>
-                                <LogOut size={18} /> Deconectare
+                                <LogOut size={18}/> Deconectare
                             </button>
                         </div>
                     </aside>
 
-                    {/* MAIN AREA CU TAB-URI */}
                     <section className="profile-main-area">
                         <div className="welcome-banner">
-                            {/* Iconița se schimbă în funcție de tab-ul activ */}
-                            {activeTab === 'products' && <Package size={24} />}
-                            {activeTab === 'orders' && <ShoppingBag size={24} />}
-                            {activeTab === 'admin' && <ShieldCheck size={24} />}
+                            {activeTab === 'products' && <Package size={24}/>}
+                            {activeTab === 'orders' && <ShoppingBag size={24}/>}
+                            {activeTab === 'admin' && <ShieldCheck size={24}/>}
 
                             <div>
                                 <h3>
@@ -114,38 +108,35 @@ const Profile = () => {
                             </div>
                         </div>
 
-                        {/* NAVIGARE TAB-URI */}
                         <div className="profile-tabs-nav">
                             <button
                                 className={`tab-nav-item ${activeTab === 'products' ? 'active' : ''}`}
                                 onClick={() => setActiveTab('products')}
                             >
-                                <List size={18} /> Anunțuri
+                                <List size={18}/> Anunțuri
                             </button>
 
                             <button
                                 className={`tab-nav-item ${activeTab === 'orders' ? 'active' : ''}`}
                                 onClick={() => setActiveTab('orders')}
                             >
-                                <ShoppingBag size={18} /> Comenzi
+                                <ShoppingBag size={18}/> Comenzi
                             </button>
 
-                            {/* --- TAB DOAR PENTRU ADMIN --- */}
                             {user.role === 'ADMIN' && (
                                 <button
                                     className={`tab-nav-item admin-tab-btn ${activeTab === 'admin' ? 'active' : ''}`}
                                     onClick={() => setActiveTab('admin')}
                                 >
-                                    <ShieldCheck size={18} /> Admin Panel
+                                    <ShieldCheck size={18}/> Admin Panel
                                 </button>
                             )}
                         </div>
 
-                        {/* CONȚINUT DINAMIC: Aici se schimbă ecranele */}
                         <div className="tab-container-content">
-                            {activeTab === 'products' && <MyProducts />}
-                            {activeTab === 'orders' && <OrderHistory />}
-                            {activeTab === 'admin' && user.role === 'ADMIN' && <AdminDashboard />}
+                            {activeTab === 'products' && <MyProducts/>}
+                            {activeTab === 'orders' && <OrderHistory/>}
+                            {activeTab === 'admin' && user.role === 'ADMIN' && <AdminDashboard/>}
                         </div>
                     </section>
 

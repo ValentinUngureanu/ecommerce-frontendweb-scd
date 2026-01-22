@@ -27,7 +27,6 @@
     font-weight: 600;
 }
 
-/* Layout principal */
 .cart-main-layout {
     display: grid;
     grid-template-columns: 1fr 380px;
@@ -35,7 +34,6 @@
     align-items: start;
 }
 
-/* Coloana cu produse */
 .cart-items-column {
     display: flex;
     flex-direction: column;
@@ -53,7 +51,7 @@
 }
 
 .cart-db-item:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .cart-db-item img {
@@ -82,7 +80,6 @@
     margin-bottom: 12px;
 }
 
-/* Controale Cantitate */
 .db-qty-actions {
     display: flex;
     align-items: center;
@@ -121,7 +118,7 @@
 .db-remove-btn {
     background: none;
     border: none;
-    color: #ba1a1a; /* Culoare eroare */
+    color: #ba1a1a;
     padding: 10px;
     cursor: pointer;
     border-radius: 50%;
@@ -132,7 +129,6 @@
     background: #ffdad6;
 }
 
-/* Card Sumar (Sidebar) */
 .cart-checkout-card {
     background: var(--surface-variant);
     padding: 30px;
@@ -193,10 +189,9 @@
 .final-pay-btn:hover {
     opacity: 0.9;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Stări goale / Loading */
 .empty-cart-view {
     text-align: center;
     padding: 100px 0;
@@ -225,15 +220,19 @@
 }
 
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-/* Responsive */
 @media (max-width: 950px) {
     .cart-main-layout {
         grid-template-columns: 1fr;
     }
+
     .cart-checkout-card {
         position: static;
     }

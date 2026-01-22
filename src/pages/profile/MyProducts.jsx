@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { productService } from '../../api/productService';
-import { authService } from '../../api/authService';
-import { useNavigate } from 'react-router-dom';
-import { Edit3, Trash2, Package } from 'lucide-react';
+import React, {useEffect, useState} from 'react';
+import {productService} from '../../api/productService';
+import {authService} from '../../api/authService';
+import {useNavigate} from 'react-router-dom';
+import {Edit3, Package, Trash2} from 'lucide-react';
 import './MyProducts.css';
 
 const MyProducts = () => {
@@ -17,9 +17,7 @@ const MyProducts = () => {
 
             setLoading(true);
             try {
-                // Folosim metoda dedicată din productService.js
                 const res = await productService.getByUser(currentUser.id);
-                console.log("Produse primite de la server pentru acest user:", res.data);
                 setProducts(res.data);
             } catch (err) {
                 console.error("Eroare la încărcarea produselor tale:", err);
@@ -34,12 +32,11 @@ const MyProducts = () => {
     const handleDelete = async (id) => {
         if (window.confirm("Ești sigur că vrei să ștergi acest anunț?")) {
             try {
-                // Atenție: Metoda delete din service-ul tău cere (id, userId)
                 await productService.delete(id, currentUser.id);
                 setProducts(products.filter(p => p.id !== id));
 
                 window.dispatchEvent(new CustomEvent('app-notification', {
-                    detail: { message: "Produsul a fost șters. 🗑️" }
+                    detail: {message: "Produsul a fost șters. 🗑️"}
                 }));
             } catch (err) {
                 console.error("Eroare la ștergere:", err);
@@ -53,7 +50,7 @@ const MyProducts = () => {
         <div className="my-products-list">
             {products.length === 0 ? (
                 <div className="no-products-state">
-                    <Package size={40} />
+                    <Package size={40}/>
                     <p>Nu ai postat niciun anunț încă.</p>
                     <button onClick={() => navigate('/add-product')} className="add-first-btn">
                         Postează primul anunț
@@ -78,7 +75,7 @@ const MyProducts = () => {
                                 className="action-icon-btn edit-btn"
                                 onClick={() => navigate(`/edit-product/${product.id}`)}
                             >
-                                <Edit3 size={18} />
+                                <Edit3 size={18}/>
                                 <span>Editează</span>
                             </button>
 
@@ -86,7 +83,7 @@ const MyProducts = () => {
                                 className="action-icon-btn delete-btn"
                                 onClick={() => handleDelete(product.id)}
                             >
-                                <Trash2 size={18} />
+                                <Trash2 size={18}/>
                             </button>
                         </div>
                     </div>

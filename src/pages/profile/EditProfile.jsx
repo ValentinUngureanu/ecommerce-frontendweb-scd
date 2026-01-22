@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { authService } from '../../api/authService';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {authService} from '../../api/authService';
 import Navbar from '../../components/layout/Navbar';
-import { ArrowLeft, User, Mail, MapPin, Phone, Lock, Save, Link, ShieldCheck, Image as ImageIcon } from 'lucide-react';
+import {ArrowLeft, Image as ImageIcon, Link, Lock, Mail, MapPin, Phone, Save, ShieldCheck, User} from 'lucide-react';
 import './EditProfile.css';
 
 const EditProfile = () => {
@@ -21,10 +21,9 @@ const EditProfile = () => {
     });
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({...formData, [e.target.name]: e.target.value});
     };
 
-    // --- SALVARE DATE PERSONALE ---
     const handleUpdateInfo = async (e) => {
         e.preventDefault();
 
@@ -37,34 +36,32 @@ const EditProfile = () => {
                 profilePictureUrl: formData.profilePictureUrl
             };
 
-            // Trimitem datele către UserController.java
             await authService.updateProfile(currentUser.id, updateData);
 
             window.dispatchEvent(new CustomEvent('app-notification', {
-                detail: { message: "Profilul a fost actualizat cu succes! ✨" }
+                detail: {message: "Profilul a fost actualizat cu succes! ✨"}
             }));
         } catch (err) {
             console.error("Eroare server 500:", err.response?.data);
             window.dispatchEvent(new CustomEvent('app-notification', {
-                detail: { message: "Eroare la comunicarea cu serverul. Verificați baza de date. ❌" }
+                detail: {message: "Eroare la comunicarea cu serverul. Verificați baza de date. ❌"}
             }));
         }
     };
 
-    // --- SCHIMBARE PAROLĂ ---
     const handleUpdatePassword = async (e) => {
         e.preventDefault();
 
         if (formData.oldPassword !== currentUser.password) {
             window.dispatchEvent(new CustomEvent('app-notification', {
-                detail: { message: "Parola curentă este incorectă! ⚠️" }
+                detail: {message: "Parola curentă este incorectă! ⚠️"}
             }));
             return;
         }
 
         if (formData.newPassword !== formData.confirmPassword) {
             window.dispatchEvent(new CustomEvent('app-notification', {
-                detail: { message: "Parolele noi nu coincid! ❌" }
+                detail: {message: "Parolele noi nu coincid! ❌"}
             }));
             return;
         }
@@ -75,10 +72,10 @@ const EditProfile = () => {
             });
 
             window.dispatchEvent(new CustomEvent('app-notification', {
-                detail: { message: "Parola a fost actualizată cu succes! 🔒" }
+                detail: {message: "Parola a fost actualizată cu succes! 🔒"}
             }));
 
-            setFormData({ ...formData, oldPassword: '', newPassword: '', confirmPassword: '' });
+            setFormData({...formData, oldPassword: '', newPassword: '', confirmPassword: ''});
         } catch (err) {
             console.error(err);
         }
@@ -86,16 +83,16 @@ const EditProfile = () => {
 
     return (
         <div className="edit-profile-page">
-            <Navbar />
+            <Navbar/>
             <div className="edit-container">
                 <button className="back-btn-simple" onClick={() => navigate('/profile')}>
-                    <ArrowLeft size={18} /> Înapoi la profil
+                    <ArrowLeft size={18}/> Înapoi la profil
                 </button>
 
                 <div className="edit-main-grid">
                     <div className="edit-section-card">
                         <div className="section-header">
-                            <User size={20} />
+                            <User size={20}/>
                             <h3>Informații Profil</h3>
                         </div>
 
@@ -119,7 +116,7 @@ const EditProfile = () => {
                             <div className="edit-input-group">
                                 <label><ImageIcon size={14}/> URL Imagine Profil</label>
                                 <div className="url-input-wrapper">
-                                    <Link size={16} className="url-icon" />
+                                    <Link size={16} className="url-icon"/>
                                     <input
                                         type="text"
                                         name="profilePictureUrl"
@@ -132,47 +129,50 @@ const EditProfile = () => {
 
                             <div className="edit-input-group">
                                 <label><User size={14}/> Nume utilizator</label>
-                                <input type="text" name="username" value={formData.username} onChange={handleChange} />
+                                <input type="text" name="username" value={formData.username} onChange={handleChange}/>
                             </div>
                             <div className="edit-input-group">
                                 <label><Mail size={14}/> Email</label>
-                                <input type="email" name="email" value={formData.email} onChange={handleChange} />
+                                <input type="email" name="email" value={formData.email} onChange={handleChange}/>
                             </div>
                             <div className="edit-input-group">
                                 <label><Phone size={14}/> Telefon</label>
-                                <input type="text" name="phone" value={formData.phone} onChange={handleChange} />
+                                <input type="text" name="phone" value={formData.phone} onChange={handleChange}/>
                             </div>
                             <div className="edit-input-group">
                                 <label><MapPin size={14}/> Locație</label>
-                                <input type="text" name="location" value={formData.location} onChange={handleChange} />
+                                <input type="text" name="location" value={formData.location} onChange={handleChange}/>
                             </div>
                             <button type="submit" className="action-save-btn">
-                                <Save size={18} /> Salvează Datele
+                                <Save size={18}/> Salvează Datele
                             </button>
                         </form>
                     </div>
 
                     <div className="edit-section-card">
                         <div className="section-header">
-                            <ShieldCheck size={20} />
+                            <ShieldCheck size={20}/>
                             <h3>Securitate Cont</h3>
                         </div>
 
                         <form onSubmit={handleUpdatePassword} className="edit-form-content">
                             <div className="edit-input-group">
                                 <label>Parola curentă</label>
-                                <input type="password" name="oldPassword" value={formData.oldPassword} onChange={handleChange} required />
+                                <input type="password" name="oldPassword" value={formData.oldPassword}
+                                       onChange={handleChange} required/>
                             </div>
                             <div className="edit-input-group password-divider">
                                 <label>Parola nouă</label>
-                                <input type="password" name="newPassword" value={formData.newPassword} onChange={handleChange} required />
+                                <input type="password" name="newPassword" value={formData.newPassword}
+                                       onChange={handleChange} required/>
                             </div>
                             <div className="edit-input-group">
                                 <label>Confirmă parola nouă</label>
-                                <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
+                                <input type="password" name="confirmPassword" value={formData.confirmPassword}
+                                       onChange={handleChange} required/>
                             </div>
                             <button type="submit" className="action-save-btn security-btn">
-                                <Lock size={18} /> Actualizează Parola
+                                <Lock size={18}/> Actualizează Parola
                             </button>
                         </form>
                     </div>
